@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Home, FileText, Users, Bookmark, PenSquare, CheckCheckIcon } from 'lucide-react'
+import { Home, FileText, Users, Bookmark, PenSquare, CheckCheckIcon, NotebookPen } from 'lucide-react'
 
 export default function Sidebar() {
   return (
@@ -26,11 +26,15 @@ export default function Sidebar() {
             </Link>
             <Link href="/generator" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
             <PenSquare className="h-4 w-4 text-indigo-400" />
-              Generator
+              Generate Blog
             </Link>
             <Link href="/seocheck" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
             <CheckCheckIcon className="h-4 w-4 text-indigo-400" />
               SEO Check
+            </Link>
+            <Link href="/socialmedia" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
+            <NotebookPen className="h-4 w-4 text-indigo-400" />
+              Social Media Posts
             </Link>
           </nav>
         </div>
