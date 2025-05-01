@@ -18,7 +18,7 @@ const SOCIAL_POST_PROMPT_PATH = path.join(
   "app",
   "socialmedia",
   "prompts",
-  "generatePosts.md" // Assuming this is the correct prompt file
+  "generatePost.md" // Assuming this is the correct prompt file
 );
 
 
