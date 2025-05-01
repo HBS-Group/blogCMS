@@ -1,4 +1,4 @@
-Generate 5 catchy, unique, and SEO-friendly title ideas for a __CONTENT_TYPE__ focused on the main keyword: "__PRIMARY_KEYWORD__".
+export const TITLE_GENERATION_PROMPT = `Generate 5 catchy, unique, and SEO-friendly title ideas for a __CONTENT_TYPE__ focused on the main keyword: "__PRIMARY_KEYWORD__".
 
 **Context:**
 - Main Keyword: "__PRIMARY_KEYWORD__"
@@ -13,8 +13,8 @@ Generate 5 catchy, unique, and SEO-friendly title ideas for a __CONTENT_TYPE__ f
 **Output Format:**
 - Provide ONLY the list of 5 titles.
 - Each title MUST be on a new line.
-- DO NOT use numbering, bullet points, or any kind of list markers (like `-` or `*`).
+- DO NOT use numbering, bullet points, or any kind of list markers (like '-' or '*').
 - DO NOT include any introductory/concluding text (like "Here are the titles:").
 - DO NOT include quotation marks around the titles.
 
-Generate the titles now.
+Generate the titles now.`;

@@ -6,47 +6,18 @@ import {
   HarmCategory,
   HarmBlockThreshold,
 } from "@google/generative-ai";
-import fs from "fs"; // Import Node.js file system module
-import path from "path"; // Import Node.js path module
 
+import {articlegeneration} from "./prompt-templates/article-generation";
+import {TITLE_GENERATION_PROMPT} from "./prompt-templates/title-generation";
+import {OUTLINE_GENERATION_PROMPT} from "./prompt-templates/outline-generation";
+import {IMAGE_PROMPT_PATH} from "./prompt-templates/image-prompt";
 // --- Constants ---
 // Use the latest stable model or the specific experimental one you prefer
 const MODEL_NAME = "gemini-2.5-flash-preview-04-17";
 const API_KEY = process.env.GEMINI_API_KEY || "";
 
-// Paths to prompt template files (relative to project root)
-const ARTICLE_PROMPT_PATH = path.join(
-  process.cwd(),
-  "src",
-  "app",
-  "generator",
-  "prompt-templates",
-  "article-generation.md"
-);
-const TITLE_PROMPT_PATH = path.join(
-  process.cwd(),
-  "src",
-  "app",
-  "generator",
-  "prompt-templates",
-  "title-generation.md"
-);
-const OUTLINE_PROMPT_PATH = path.join(
-  process.cwd(),
-  "src",
-  "app",
-  "generator",
-  "prompt-templates",
-  "outline-generation.md"
-);
-const IMAGE_PROMPT_PATH = path.join(
-  process.cwd(),
-  "src",
-  "app",
-  "generator",
-  "prompt-templates",
-  "image-prompt.md"
-); // <-- Add new path
+
+
 
 // --- Initialization & Validation ---
 if (!API_KEY) {
@@ -119,29 +90,29 @@ function mapCreativityToTemperature(level: number): number {
  * @throws Error if the template file cannot be read.
  */
 function loadAndPopulatePrompt(
-  templatePath: string,
+  promptTemplate: string,
   replacements: Record<string, string | undefined>
 ): string {
-  let template: string;
-  try {
-    template = fs.readFileSync(templatePath, "utf8");
-  } catch (error) {
-    console.error(`Failed to read prompt template at: ${templatePath}`, error);
-    throw new Error(
-      `Could not load prompt template file: ${path.basename(templatePath)}`
-    );
-  }
-
-  let populatedPrompt = template;
+  let populatedPrompt = promptTemplate;
+  
   for (const placeholder in replacements) {
     // ReplaceAll ensures all occurrences are replaced. Use empty string for undefined values.
-    populatedPrompt = populatedPrompt.replaceAll(
-      placeholder,
-      replacements[placeholder] || ""
-    );
+    // Ensure the placeholder exists in the template before replacing
+    if (promptTemplate.includes(placeholder)) {
+        populatedPrompt = populatedPrompt.replaceAll(
+          placeholder,
+          replacements[placeholder] || ""
+        );
+    } else {
+        console.warn(`Placeholder "${placeholder}" not found in template`);
+    }
   }
+  // Optional: Remove any example usage section if present in the template
+  populatedPrompt = populatedPrompt.split("---")[0].trim(); // Adjust if your template has a separator
   return populatedPrompt;
 }
+
+
 
 // --- ACTION: Generate Article Content ---
 export async function generateArticleAction(
@@ -208,7 +179,7 @@ export async function generateArticleAction(
       __TODAT_DATE__: todayDate,
     };
 
-    prompt = loadAndPopulatePrompt(ARTICLE_PROMPT_PATH, replacements);
+    prompt = loadAndPopulatePrompt(articlegeneration, replacements);
   } catch (error: unknown) {
     return {
       success: false,
@@ -310,7 +281,7 @@ export async function generateTitleAction(
       __TARGET_LANGUAGE__: targetLanguage,
       __CONTENT_TYPE__: contentType,
     };
-    prompt = loadAndPopulatePrompt(TITLE_PROMPT_PATH, replacements);
+    prompt = loadAndPopulatePrompt(TITLE_GENERATION_PROMPT, replacements);
   } catch (error: unknown) {
     return {
       success: false,
@@ -456,7 +427,7 @@ export async function generateOutlineAction(
       __MUST_INCLUDE_CTA__: mustIncludeCta,
       __TODAT_DATE__: todayDate,
     };
-    prompt = loadAndPopulatePrompt(OUTLINE_PROMPT_PATH, replacements);
+    prompt = loadAndPopulatePrompt(OUTLINE_GENERATION_PROMPT, replacements);
   } catch (error: unknown) {
     return {
       success: false,

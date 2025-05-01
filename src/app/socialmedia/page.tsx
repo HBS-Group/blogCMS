@@ -42,7 +42,7 @@ const LENGTHS = [
   { key: "short", label: "Short (under 100 words)" }, // Added detail for clarity
   { key: "medium", label: "Medium (100-150 words)" }, // Added detail for clarity
   { key: "long", label: "Long (150-200 words)" }, // Added detail for clarity
-  { key: "Very Long", label: "Long (500-750 words)" }, // Added detail for clarity
+  { key: "Very Long", label: "Very Long (500-750 words)" }, // Added detail for clarity
 ];
 
 const LANGUAGES = [ // Define available languages
@@ -150,8 +150,6 @@ export default function SocialMediaGeneratorPage() {
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    // Optional: Add some user feedback, like a toast notification
-    // console.log(`Copied: ${text}`);
   };
 
   return (

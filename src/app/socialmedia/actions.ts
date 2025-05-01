@@ -5,22 +5,9 @@ import {
   HarmCategory,
   HarmBlockThreshold,
 } from "@google/generative-ai";
-import fs from "fs"; // Import Node.js file system module
-import path from "path"; // Import Node.js path module
-
+import { SOCIAL_POST_PROMPT } from './prompts/templates';
 const MODEL_NAME = "gemini-2.5-flash-preview-04-17";
 const API_KEY = process.env.GEMINI_API_KEY || "";
-
-// Path to the prompt template file
-const SOCIAL_POST_PROMPT_PATH = path.join(
-  process.cwd(),
-  "src",
-  "app",
-  "socialmedia",
-  "prompts",
-  "generatePost.md" // Assuming this is the correct prompt file
-);
-
 
 if (!API_KEY) {
   console.error("CRITICAL: Gemini API Key not found in environment variables (GEMINI_API_KEY).");
@@ -60,32 +47,23 @@ interface SocialPostInput {
   callToAction?: string; // <-- Add optional callToAction field
 }
 
-// Helper function to load and populate prompt (adapted from generator/actions.ts)
+// Helper function to load and populate prompt
 function loadAndPopulatePrompt(
-  templatePath: string,
+  promptTemplate: string,
   replacements: Record<string, string | undefined>
 ): string {
-  let template: string;
-  try {
-    template = fs.readFileSync(templatePath, "utf8");
-  } catch (error) {
-    console.error(`Failed to read prompt template at: ${templatePath}`, error);
-    throw new Error(
-      `Could not load prompt template file: ${path.basename(templatePath)}`
-    );
-  }
-
-  let populatedPrompt = template;
+  let populatedPrompt = promptTemplate;
+  
   for (const placeholder in replacements) {
     // ReplaceAll ensures all occurrences are replaced. Use empty string for undefined values.
     // Ensure the placeholder exists in the template before replacing
-    if (template.includes(placeholder)) {
+    if (promptTemplate.includes(placeholder)) {
         populatedPrompt = populatedPrompt.replaceAll(
           placeholder,
           replacements[placeholder] || ""
         );
     } else {
-        console.warn(`Placeholder "${placeholder}" not found in template: ${templatePath}`);
+        console.warn(`Placeholder "${placeholder}" not found in template`);
     }
   }
   // Optional: Remove any example usage section if present in the template
@@ -117,17 +95,15 @@ export async function generateSocialPostsAction(
     // Remove placeholders that don't have a value
     Object.keys(replacements).forEach(key => {
         if (replacements[key] === undefined || replacements[key] === "") {
-            console.log(`Removing placeholder "${key}" because its value is empty or undefined.`);
             // Keep the placeholder in the prompt text but don't replace it if the value is empty/undefined
             // This allows the LLM to see the instruction even if no specific value is provided
             // delete replacements[key]; // Commented out: Let the placeholder remain if value is empty
         }
     });
 
-    prompt = loadAndPopulatePrompt(SOCIAL_POST_PROMPT_PATH, replacements);
-    console.log("--- Populated Prompt ---");
-    console.log(prompt);
-    console.log("------------------------");
+    // And update the function call
+    prompt = loadAndPopulatePrompt(SOCIAL_POST_PROMPT, replacements);
+    
 
     // Clean up any remaining unfilled placeholders (like the optional accent or audience)
     prompt = prompt.replace(/\[insert accent\]/g, ''); // Remove accent placeholder if not filled
@@ -139,7 +115,6 @@ export async function generateSocialPostsAction(
     prompt += "\nAlso, suggest 5-7 relevant hashtags (as a list) for this topic, including a mix of popular and niche tags.";
     prompt += "\nReturn the posts as a numbered list (e.g., 1. Post content...), then the hashtags as a separate list below the posts, under a heading like 'Suggested Hashtags:'.";
 
-
   } catch (error: unknown) {
     return {
       success: false,
@@ -150,12 +125,9 @@ export async function generateSocialPostsAction(
     };
   }
 
-
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
   try {
-    console.log("[generateSocialPostsAction] Sending prompt (first 300 chars):", prompt.substring(0, 300) + "..."); // Log more chars
-
     const result = await model.generateContent({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: {
