@@ -1,21 +1,18 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+
 
 interface GeneratorHeaderProps {
     freelancerName: string | null;
     userEmail: string | null;
-    onSignOut: () => void;
-    isSignOutPending: boolean;
     className?: string;
 }
 
 export const GeneratorHeader: React.FC<GeneratorHeaderProps> = ({
     freelancerName,
     userEmail,
-    onSignOut,
-    isSignOutPending,
+
+
     className
 }) => {
     return (
@@ -27,16 +24,7 @@ export const GeneratorHeader: React.FC<GeneratorHeaderProps> = ({
                 <div className="text-sm text-indigo-300 truncate max-w-[200px] sm:max-w-xs">
                     {freelancerName ? `Welcome, ${freelancerName}` : userEmail ? `Welcome, ${userEmail}` : "Welcome, Guest"}
                 </div>
-                <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={onSignOut} 
-                    disabled={isSignOutPending}
-                    className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
-                >
-                    {isSignOutPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                    Sign Out
-                </Button>
+               
             </div>
         </div>
     );

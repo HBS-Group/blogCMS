@@ -4,7 +4,6 @@
 import React, { useState, useTransition, useEffect, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { signOut as performSignOut } from "@/app/login/actions";
 import {
     generateArticleAction,
     generateTitleAction,
@@ -160,13 +159,7 @@ export default function BlogGenerator() {
         setSuccessMessage(null);
     }, []);
 
-    const handleSignOut = useCallback(async () => {
-        clearMessages();
-        startTransition(async () => {
-            await performSignOut();
-            window.location.reload(); // Consider using Next.js router for navigation if possible
-        });
-    }, [clearMessages, startTransition]);
+    
 
     const handleGenerateTitles = useCallback(async () => {
         if (!primaryKeyword) {
@@ -461,8 +454,6 @@ export default function BlogGenerator() {
             <GeneratorHeader
                 freelancerName={freelancerName}
                 userEmail={userEmail}
-                onSignOut={handleSignOut}
-                isSignOutPending={isPending && !isGenerating && !isFormatting && !isUploading} // More specific pending state
             />
 
             {/* --- Message Area --- */}
