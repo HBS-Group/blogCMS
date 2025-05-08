@@ -357,7 +357,7 @@ export default function SocialMediaGeneratorPage() {
                     key={idx}
                     onClick={() => handleCopy(tag)}
                     className="bg-indigo-700/30 text-indigo-200 px-3 py-1 rounded-full text-sm font-medium hover:bg-indigo-700/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-colors duration-150"
-                    title={`Copy ${tag}`} // Add tooltip
+                    title={`Copy ${tag}`} 
                   >
                     {tag}
                   </button>

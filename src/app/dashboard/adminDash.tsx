@@ -7,29 +7,32 @@ import { PlusCircle, BarChart2, Clock, Users, FileText } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 
 
-export default async function Dashboard() {
+
+export default async function AdminDashboard() {
   const supabase = await createClient();
-  
-  // Fetch blog posts and stats
+
+    // Fetch blog posts and stats
   const { data: posts } = await supabase
-    .from('blog_posts')
-    .select(`*, freelancers ( name )`)
-    .order('created_at', { ascending: false });
+  .from('blog_posts')
+  .select(`*, freelancers ( name )`)
+  .order('created_at', { ascending: false });
 
-  const { count: totalPosts } = await supabase
-    .from('blog_posts')
-    .select('*', { count: 'exact' });
+const { count: totalPosts } = await supabase
+  .from('blog_posts')
+  .select('*', { count: 'exact' });
 
-  const { count: publishedPosts } = await supabase
-    .from('blog_posts')
-    .select('*', { count: 'exact' })
-    .eq('status', 'published');
+const { count: publishedPosts } = await supabase
+  .from('blog_posts')
+  .select('*', { count: 'exact' })
+  .eq('status', 'published');
 
-  const { data: recentPosts } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(5);
+const { data: recentPosts } = await supabase
+  .from('blog_posts')
+  .select('*')
+  .order('created_at', { ascending: false })
+  .limit(5);
+
+  
 
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">

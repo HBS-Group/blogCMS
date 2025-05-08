@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex flex-col items-center md:items-start gap-2">
           <p className="text-sm text-gray-400">
-            © {new Date().getFullYear()} Tech Blog Generator. All rights reserved.
+            © {new Date().getFullYear()} Tech AI Generator. All rights reserved.
           </p>
           <p className="text-xs text-gray-500">
             Powered by <Link target="_blank" href="hbs-group.xyz"> Hyber Business Solution</Link>

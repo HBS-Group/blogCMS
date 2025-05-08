@@ -7,6 +7,8 @@ import Footer from '@/components/footer'
 // Import your Supabase server client creator utility
 // Adjust the path based on your project structure
 import { createClient } from '@/utils/supabase/server' // Example path
+import getUserRole from './actions/userRole'
+import { RoleProvider } from './contexts/RoleContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,31 +32,31 @@ export default async function RootLayout({
   // Determine login status based on data existence
   const isLoggedIn = !!user;
 
+  const role = await getUserRole(supabaseClient);
   return (
     <html lang="en">
       <body className={`${inter.className} bg-gray-900 text-gray-100 min-h-screen flex flex-col`}>
-        {isLoggedIn ? (
-          // Layout for logged-in users
-          <>
-            <div className="flex flex-1">
-              <Sidebar />
-              <div className="flex-1 flex flex-col">
-                <Navbar />
-                <main className="flex-1 p-4 md:p-6 lg:p-8">
-                  {children}
-                </main>
+      {isLoggedIn && role ? ( // Check for role as well, though it might default if not found
+          // Wrap the logged-in layout with RoleProvider
+          <RoleProvider role={role}>
+            <>
+              <div className="flex flex-1">
+                <Sidebar userRole={role} /> {/* Sidebar still gets it as a prop */}
+                <div className="flex-1 flex flex-col">
+                  <Navbar /> {/* Navbar could now use useUserRole() if it's a Client Component */}
+                  <main className="flex-1 p-4 md:p-6 lg:p-8">
+                    {children} {/* Children can now use useUserRole() if they are Client Components */}
+                  </main>
+                </div>
               </div>
-            </div>
-            <Footer />
-          </>
+              <Footer />
+            </>
+          </RoleProvider>
         ) : (
-          // Layout for logged-out users (only show children)
-          // You might want a different container or minimal structure here
+          // Layout for logged-out users
           <main className="flex-1 p-4 md:p-6 lg:p-8">
              {children}
           </main>
-          // Optionally add a minimal footer for logged-out users if needed
-          // <Footer />
         )}
       </body>
     </html>
