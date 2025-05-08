@@ -12,7 +12,7 @@ export default async function Dashboard() {
   } = await supabase.auth.getUser();
   if (authError) {
     console.error(
-      "Dashboard Page: Error fetching auth user:",
+      "Dashboard Page: Error fetching auth user:-",
       authError.message
     );
     notFound();
