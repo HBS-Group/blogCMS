@@ -17,7 +17,7 @@ import {
   cold_outreach_PROMPT,
   follow_up_PROMPT,
   marketing_PROMPT
-} from './prompts/templates'; // Import all prompt templates
+} from './prompts/templates';
 
 // --- Configuration ---
 const MODEL_NAME = "gemini-2.5-flash-preview-04-17"; 

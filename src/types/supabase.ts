@@ -7,6 +7,31 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       blog_categories: {
@@ -372,6 +397,179 @@ export type Database = {
         }
         Relationships: []
       }
+      order_items: {
+        Row: {
+          id: string
+          order_id: string
+          price_at_time_of_order: number
+          product_id: string
+          quantity: number
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          price_at_time_of_order: number
+          product_id: string
+          quantity: number
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          price_at_time_of_order?: number
+          product_id?: string
+          quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          billing_address_line1: string | null
+          billing_address_line2: string | null
+          billing_city: string | null
+          billing_country: string | null
+          billing_postal_code: string | null
+          billing_state_province: string | null
+          created_at: string
+          id: string
+          order_date: string
+          status: string
+          total_amount: number
+          user_id: string
+        }
+        Insert: {
+          billing_address_line1?: string | null
+          billing_address_line2?: string | null
+          billing_city?: string | null
+          billing_country?: string | null
+          billing_postal_code?: string | null
+          billing_state_province?: string | null
+          created_at?: string
+          id?: string
+          order_date?: string
+          status?: string
+          total_amount: number
+          user_id: string
+        }
+        Update: {
+          billing_address_line1?: string | null
+          billing_address_line2?: string | null
+          billing_city?: string | null
+          billing_country?: string | null
+          billing_postal_code?: string | null
+          billing_state_province?: string | null
+          created_at?: string
+          id?: string
+          order_date?: string
+          status?: string
+          total_amount?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      product_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          demo_url: string | null
+          description: string | null
+          file_path: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          license_type: string | null
+          name: string
+          price: number
+          requirements: string | null
+          sku: string | null
+          updated_at: string
+          version: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          demo_url?: string | null
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          license_type?: string | null
+          name: string
+          price: number
+          requirements?: string | null
+          sku?: string | null
+          updated_at?: string
+          version?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          demo_url?: string | null
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          license_type?: string | null
+          name?: string
+          price?: number
+          requirements?: string | null
+          sku?: string | null
+          updated_at?: string
+          version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "product_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       project_skills: {
         Row: {
           created_at: string
@@ -513,6 +711,50 @@ export type Database = {
           },
         ]
       }
+      sent_mails: {
+        Row: {
+          body: string
+          created_at: string
+          freelancer_id: string
+          id: string
+          message_id: string | null
+          receiver_email: string
+          sent_at: string
+          status: string | null
+          subject: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          freelancer_id: string
+          id?: string
+          message_id?: string | null
+          receiver_email: string
+          sent_at?: string
+          status?: string | null
+          subject: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          freelancer_id?: string
+          id?: string
+          message_id?: string | null
+          receiver_email?: string
+          sent_at?: string
+          status?: string | null
+          subject?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_freelancer_sender"
+            columns: ["freelancer_id"]
+            isOneToOne: false
+            referencedRelation: "freelancers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       skills: {
         Row: {
           description: string | null
@@ -580,6 +822,20 @@ export type Database = {
       calculate_freelancer_test_score: {
         Args: { p_attempt_id: string }
         Returns: number
+      }
+      create_blog_post: {
+        Args: {
+          p_title: string
+          p_slug: string
+          p_content: string
+          p_excerpt?: string
+          p_featured_image_path?: string
+          p_status?: string
+          p_category_ids?: string[]
+          p_tag_ids?: string[]
+          p_skill_ids?: string[]
+        }
+        Returns: string
       }
       get_freelancer_dashboard_tests: {
         Args: { p_freelancer_id: string }
@@ -779,6 +1035,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },

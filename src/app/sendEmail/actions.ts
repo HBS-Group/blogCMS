@@ -1,7 +1,7 @@
 "use server";
 import nodemailer from "nodemailer";
-// OPTIONAL: For programmatic CSS inlining (recommended for production)
 import juice from "juice";
+import { sendAndLogEmail } from "./emaillog";
 
 export async function sendEmailAction(
   recipient: string,
@@ -294,21 +294,21 @@ export async function sendEmailAction(
     // console.log(inlinedHtml);
 
     const textVersion = `
-${subject}
+              ${subject}
 
-${body}
+              ${body}
+              ---
+              Best regards,
+              ${companyName}
 
----
-Best regards,
-${companyName}
-
-${companyAddress}
-Website: ${process.env.NEXT_PUBLIC_WEBSITE_URL || "Not available"}
-LinkedIn: ${process.env.NEXT_PUBLIC_LINKEDIN_URL || "Not available"}
-Facebook: ${process.env.NEXT_PUBLIC_FACEBOOK_URL || "Not available"}
-
-
-If you'd like to unsubscribe, please reply to this email with the subject "Unsubscribe" or visit #YOUR_UNSUBSCRIBE_LINK#. 
+              ${companyAddress}
+              Website: ${process.env.NEXT_PUBLIC_WEBSITE_URL || "Not available"}
+              LinkedIn: ${
+                process.env.NEXT_PUBLIC_LINKEDIN_URL || "Not available"
+              }
+              Facebook: ${
+                process.env.NEXT_PUBLIC_FACEBOOK_URL || "Not available"
+              }
     `;
 
     // Send mail with defined transport object
@@ -317,21 +317,17 @@ If you'd like to unsubscribe, please reply to this email with the subject "Unsub
       to: recipient,
       subject: subject,
       text: textVersion,
-      html: inlinedHtml, // Or use `inlinedHtml` if you implement CSS inlining
+      html: inlinedHtml,
     };
-
-    console.log("Attempting to send email with configuration:", {
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
-      secure: process.env.SMTP_SECURE,
-      fromEmail: fromEmail,
-      to: recipient,
-      subject: subject,
-    });
-
     const info = await transporter.sendMail(mailOptions);
-
     console.log(`Email sent successfully: ${info.messageId}`);
+    // Save Email to logs
+    try{
+      sendAndLogEmail(recipient,subject,inlinedHtml,info);
+    }
+    catch(e){
+      console.error("Error Saving email or processing:", e);
+    }
     return {
       success: true,
       message: `Email sent successfully: ${info.messageId}`,
@@ -341,7 +337,7 @@ If you'd like to unsubscribe, please reply to this email with the subject "Unsub
     console.error("Error sending email:", error);
     const errorMessage =
       error instanceof Error ? error.message : "Failed to send email";
-    // Log more details if available
+    // Check for SMTP server response
     if (error instanceof Error && "response" in error) {
       console.error(
         "SMTP Server Response:",
