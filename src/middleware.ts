@@ -81,6 +81,7 @@ export async function middleware(request: NextRequest) {
     "/seocheck",
     "/socialmedia",
     "/email_logs",
+    "/mailbox",
   ];
 
   // --- 1. Handle Public Paths ---
