@@ -13,8 +13,8 @@ import { RoleProvider } from './contexts/RoleContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Tech Blog CMS',
-  description: 'Content Management System for Tech Blog',
+  title: 'Tech HBS CMS',
+  description: 'Content Management System for HBS',
 }
 
 // Make the component async
