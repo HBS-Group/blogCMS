@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Home, FileText, Users, Bookmark, PenSquare, CheckCheckIcon, NotebookPen, Mail } from 'lucide-react'
+import { Home, FileText, Users, Bookmark, PenSquare, CheckCheckIcon, NotebookPen, Mail, MailWarning, MailPlus } from 'lucide-react'
 
 // Define the props interface for type safety (optional if you're not using TypeScript, but good practice)
 interface SidebarProps {
@@ -46,6 +46,10 @@ export default function Sidebar({ userRole }: SidebarProps) {
                   <NotebookPen className="h-4 w-4 text-indigo-400" />
                   Social Media Posts
                 </Link>
+                <Link href="/email_logs" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
+                  <MailWarning  className="h-4 w-4 text-indigo-400" />
+                  Email Logs
+                </Link>
               </>
             )}
 
@@ -55,7 +59,7 @@ export default function Sidebar({ userRole }: SidebarProps) {
               Generate Email
             </Link>
             <Link href="/sendEmail" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
-              <Mail className="h-4 w-4 text-indigo-400" />
+              <MailPlus className="h-4 w-4 text-indigo-400" />
               Send Email
             </Link>
           </nav>

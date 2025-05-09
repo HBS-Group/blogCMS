@@ -80,6 +80,7 @@ export async function middleware(request: NextRequest) {
     "/generator",
     "/seocheck",
     "/socialmedia",
+    "/email_logs",
   ];
 
   // --- 1. Handle Public Paths ---
