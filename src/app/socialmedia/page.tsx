@@ -66,7 +66,7 @@ const ACCENTS: Record<string, { key: string; label: string }[]> = {
     { key: "levantine", label: "Levantine" },
     { key: "maghrebi", label: "Maghrebi" },
     { key: "algarian", label: "Algarian" },
-    { key: "sudaness", label: "Sudaness" },
+    { key: "sudanese", label: "Sudanese" },
   ],
   french: [
     { key: "parisian", label: "Parisian" },
