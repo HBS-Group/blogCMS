@@ -64,7 +64,7 @@ export default function Sidebar({ userRole }: SidebarProps) {
             </Link>
             <Link href="/crm" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
               <BookUser className="h-4 w-4 text-indigo-400" />
-              Generate Email
+              CRM
             </Link>
             <Link href="/sendEmail" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
               <MailPlus className="h-4 w-4 text-indigo-400" />
