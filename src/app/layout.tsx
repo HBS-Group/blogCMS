@@ -9,6 +9,7 @@ import Footer from '@/components/footer'
 import { createClient } from '@/utils/supabase/server' // Example path
 import getUserRole from './actions/userRole'
 import { RoleProvider } from './contexts/RoleContext'
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -46,6 +47,7 @@ export default async function RootLayout({
                   <Navbar /> {/* Navbar could now use useUserRole() if it's a Client Component */}
                   <main className="flex-1 p-4 md:p-6 lg:p-8">
                     {children} {/* Children can now use useUserRole() if they are Client Components */}
+                    <Toaster richColors />
                   </main>
                 </div>
               </div>
@@ -56,6 +58,7 @@ export default async function RootLayout({
           // Layout for logged-out users
           <main className="flex-1 p-4 md:p-6 lg:p-8">
              {children}
+             
           </main>
         )}
       </body>

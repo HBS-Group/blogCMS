@@ -228,6 +228,89 @@ export type Database = {
         }
         Relationships: []
       }
+      contacts: {
+        Row: {
+          company: string | null
+          created_at: string | null
+          email: string | null
+          id: number
+          name: string
+          notes: string | null
+          phone: string | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: number
+          name: string
+          notes?: string | null
+          phone?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: number
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      deals: {
+        Row: {
+          company_name: string | null
+          contact_id: number | null
+          created_at: string | null
+          expected_close_date: string | null
+          id: number
+          name: string
+          probability: number | null
+          stage: Database["public"]["Enums"]["deal_stage_type"] | null
+          updated_at: string | null
+          value: number | null
+        }
+        Insert: {
+          company_name?: string | null
+          contact_id?: number | null
+          created_at?: string | null
+          expected_close_date?: string | null
+          id?: number
+          name: string
+          probability?: number | null
+          stage?: Database["public"]["Enums"]["deal_stage_type"] | null
+          updated_at?: string | null
+          value?: number | null
+        }
+        Update: {
+          company_name?: string | null
+          contact_id?: number | null
+          created_at?: string | null
+          expected_close_date?: string | null
+          id?: number
+          name?: string
+          probability?: number | null
+          stage?: Database["public"]["Enums"]["deal_stage_type"] | null
+          updated_at?: string | null
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       freelancer_skills: {
         Row: {
           freelancer_id: string
@@ -393,6 +476,45 @@ export type Database = {
           portfolio_link?: string | null
           role?: string
           status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          company: string | null
+          created_at: string | null
+          email: string | null
+          id: number
+          lead_date: string | null
+          name: string
+          phone: string | null
+          source: string | null
+          status: Database["public"]["Enums"]["lead_status_type"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: number
+          lead_date?: string | null
+          name: string
+          phone?: string | null
+          source?: string | null
+          status?: Database["public"]["Enums"]["lead_status_type"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: number
+          lead_date?: string | null
+          name?: string
+          phone?: string | null
+          source?: string | null
+          status?: Database["public"]["Enums"]["lead_status_type"] | null
           updated_at?: string | null
         }
         Relationships: []
@@ -773,6 +895,102 @@ export type Database = {
         }
         Relationships: []
       }
+      stats: {
+        Row: {
+          change: string | null
+          change_type: Database["public"]["Enums"]["stat_change_type"] | null
+          created_at: string | null
+          icon_name: string | null
+          id: number
+          name: string
+          updated_at: string | null
+          value: number
+        }
+        Insert: {
+          change?: string | null
+          change_type?: Database["public"]["Enums"]["stat_change_type"] | null
+          created_at?: string | null
+          icon_name?: string | null
+          id?: number
+          name: string
+          updated_at?: string | null
+          value?: number
+        }
+        Update: {
+          change?: string | null
+          change_type?: Database["public"]["Enums"]["stat_change_type"] | null
+          created_at?: string | null
+          icon_name?: string | null
+          id?: number
+          name?: string
+          updated_at?: string | null
+          value?: number
+        }
+        Relationships: []
+      }
+      tasks: {
+        Row: {
+          assigned_to_user_id: string | null
+          completed: boolean | null
+          created_at: string | null
+          description: string | null
+          due_date: string | null
+          id: number
+          priority: Database["public"]["Enums"]["task_priority_type"] | null
+          related_to_contact_id: number | null
+          related_to_lead_id: number | null
+          related_to_text: string | null
+          status: Database["public"]["Enums"]["task_status_type"] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_to_user_id?: string | null
+          completed?: boolean | null
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: number
+          priority?: Database["public"]["Enums"]["task_priority_type"] | null
+          related_to_contact_id?: number | null
+          related_to_lead_id?: number | null
+          related_to_text?: string | null
+          status?: Database["public"]["Enums"]["task_status_type"] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_to_user_id?: string | null
+          completed?: boolean | null
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: number
+          priority?: Database["public"]["Enums"]["task_priority_type"] | null
+          related_to_contact_id?: number | null
+          related_to_lead_id?: number | null
+          related_to_text?: string | null
+          status?: Database["public"]["Enums"]["task_status_type"] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_related_to_contact_id_fkey"
+            columns: ["related_to_contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_related_to_lead_id_fkey"
+            columns: ["related_to_lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tests: {
         Row: {
           average_completion_time_minutes: number | null
@@ -921,7 +1139,17 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      deal_stage_type:
+        | "Discovery"
+        | "Qualification"
+        | "Proposal"
+        | "Negotiation"
+        | "Closed Won"
+        | "Closed Lost"
+      lead_status_type: "New" | "Contacted" | "Qualified" | "Lost"
+      stat_change_type: "increase" | "decrease"
+      task_priority_type: "High" | "Medium" | "Low"
+      task_status_type: "Pending" | "In Progress" | "Completed" | "Cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1039,6 +1267,19 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      deal_stage_type: [
+        "Discovery",
+        "Qualification",
+        "Proposal",
+        "Negotiation",
+        "Closed Won",
+        "Closed Lost",
+      ],
+      lead_status_type: ["New", "Contacted", "Qualified", "Lost"],
+      stat_change_type: ["increase", "decrease"],
+      task_priority_type: ["High", "Medium", "Low"],
+      task_status_type: ["Pending", "In Progress", "Completed", "Cancelled"],
+    },
   },
 } as const
