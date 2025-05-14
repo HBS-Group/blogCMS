@@ -46,14 +46,7 @@ export default function Sidebar({ userRole }: SidebarProps) {
                   <NotebookPen className="h-4 w-4 text-indigo-400" />
                   Social Media Posts
                 </Link>
-                <Link href="/email_logs" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
-                  <MailWarning  className="h-4 w-4 text-indigo-400" />
-                  Email Logs
-                </Link>
-                <Link href="/mailbox" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
-                  <Mailbox  className="h-4 w-4 text-indigo-400" />
-                  Mail Box
-                </Link>
+                
               </>
             )}
 
@@ -70,6 +63,14 @@ export default function Sidebar({ userRole }: SidebarProps) {
               <MailPlus className="h-4 w-4 text-indigo-400" />
               Send Email
             </Link>
+            <Link href="/email_logs" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
+                  <MailWarning  className="h-4 w-4 text-indigo-400" />
+                  Email Logs
+                </Link>
+                <Link href="/mailbox" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-300 hover:text-indigo-300 hover:bg-gray-800/50 transition-colors">
+                  <Mailbox  className="h-4 w-4 text-indigo-400" />
+                  Mail Box
+                </Link>
           </nav>
         </div>
       </div>

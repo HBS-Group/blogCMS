@@ -49,7 +49,6 @@ export default async function EmailLogsPage() {
   const queryBuilder = supabase
     .from('sent_mails')
     .select('*, freelancers(name)') // Fetch all from sent_mails and the name from related freelancers
-    .eq('freelancer_id', user.id)
     .order('created_at', { ascending: false }); // Default ordering by created_at desc
 
   const { data: fetchedEmails, error: emailsError } = await queryBuilder;
